@@ -8,8 +8,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ti102.db'
 app.config['SECRET_KEY'] = '86d669633821c3fd298601018490b6b6f9416ccb8ee7873729b963615c3d9676'
 
 database = SQLAlchemy(app)
-brypt= Bcrypt(app)
+bcrypt= Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'index'
 
 from gerenciador import routes, models

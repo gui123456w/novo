@@ -1,8 +1,8 @@
 from gerenciador import database, login_manager
-from datetime import date
+from datetime import datetime
 from flask_login import UserMixin
 
-class Usuarios(database.Model, UserMixin):
+class Usuario(database.Model, UserMixin):
     id_usuario = database.Column(database.Integer, primary_key=True)
     nome = database.Column(database.String(250), nullable=False)
     email = database.Column(database.String(250), nullable=False)
@@ -10,7 +10,7 @@ class Usuarios(database.Model, UserMixin):
 
     @login_manager.user_loader
     def load_usuario(id_usuario):
-        return Usuarios.query.get(int(id_usuario))
+        return Usuario.query.get(int(id_usuario))
 
 class Tarefa(database.Model):
     id_tarefa = database.Column(database.Integer, primary_key=True)
