@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base</title>
+    <title>{%block titulo%}
+            index
+            {%endblock%}
+    </title>
 </head>
 <body>
-    <h1>
-        Nossa base central do site;
-        <p>Nosso site trabalha com Gerenciador de tarefas, feito para analisar o computador de pessoas da empresa
-        </p>
-        <a href="{{url_for('tarefa')}}">IR para Tarefas</a>
-    </h1>
+    {%block body%}
 
-    <h3>
+        <h1>Bem vindo ao site </h1>
 
-         <a href="{{url_for('gerenciador')}}">IR para Gerenciador</a>
-    </h3>
+        <h3>Subtitulo do nosso site </h3>
 
+    {%endblock%}
+    <a href="{{url_for('tarefa', usuario = 'neymar' )}}">entrar</a>
 
 </body>
 </html>

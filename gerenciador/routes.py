@@ -7,12 +7,12 @@ from gerenciador.forms import FormLogin, FormCriarConta
 @app.route('/', methods=['GET', 'POST'])
 def index():
     formlogin=FormLogin()
-    return render_template('index.html', formlogin=formlogin)
+    return render_template('index.html', form=formlogin)
 
 @app.route('/criarconta', methods=['GET', 'POST'])
 def criarconta():
-    formCriarConta = FormCriarConta()
-    return render_template('criarconta.html', form=formCriarConta)
+    formCriarConta=FormCriarConta()
+    return render_template('criarConta.html', form=formCriarConta)
 
 @app.route('/gerenciador/<usuario>')
 @login_required
@@ -22,6 +22,5 @@ def gerenciador(usuario):
 
 
 @app.route('/tarefa/')
-@login_required
-def tarefa(usuario):
-    return render_template('tarefas.html', usuario=usuario)
+def tarefa():
+    return render_template('tarefas.html')

@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_login import UserMixin
 
 class Usuario(database.Model, UserMixin):
-    id_usuario = database.Column(database.Integer, primary_key=True)
+    id = database.Column(database.Integer, primary_key=True)
     nome = database.Column(database.String(250), nullable=False)
     email = database.Column(database.String(250), nullable=False)
 
