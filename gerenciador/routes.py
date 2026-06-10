@@ -14,13 +14,12 @@ def criarconta():
     formCriarConta=FormCriarConta()
     return render_template('criarConta.html', form=formCriarConta)
 
-@app.route('/gerenciador/<usuario>')
+@app.route('/tarefas/<usuario>')
 @login_required
-def gerenciador(usuario):
-    formCriarConta = FormCriarConta()
-    return render_template('gerenciador.html', usuario=usuario)
+def tarefas(usuario):
+    return render_template('tarefas.html', usuario=usuario)
 
 
-@app.route('/tarefa/')
-def tarefa():
-    return render_template('tarefas.html')
+@app.route('/gerenciador', methods=['GET', 'POST'])
+def gerenciador():
+    return render_template('gerenciador.html')

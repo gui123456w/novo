@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Title {%block titulo%}
+            Criar Conta
+            {%endblock%}
+    </title>
 </head>
 <body>
+    {%block body%}
 
+        <h1>dnjsikdns </h1>
+    {%endblock%}
+    <a href="{{ url_for('gerenciador') }}">Abrir Gerenciador</a>
 </body>
 </html>
