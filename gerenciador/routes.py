@@ -6,13 +6,13 @@ from gerenciador.forms import FormLogin, FormCriarConta
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    formlogin=FormLogin()
-    return render_template('index.html', form=formlogin)
+    formLogin=FormLogin()
+    return render_template('index.html', form=formLogin)
 
 @app.route('/criarconta', methods=['GET', 'POST'])
 def criarconta():
-    formCriarConta=FormCriarConta()
-    return render_template('criarConta.html', form=formCriarConta)
+    formCriarConta = FormCriarConta()
+    return render_template('criarconta.html', form=formCriarConta)
 
 @app.route('/tarefas/<usuario>')
 @login_required

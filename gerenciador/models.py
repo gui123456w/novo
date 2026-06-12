@@ -7,6 +7,9 @@ class Usuario(database.Model, UserMixin):
     nome = database.Column(database.String(250), nullable=False)
     email = database.Column(database.String(250), nullable=False)
 
+    cargo = database.Column(database.Integer, nullable=False)
+
+
     @login_manager.user_loader
     def load_usuario(id_usuario):
         return Usuario.query.get(int(id_usuario))

@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Gerenciador</title>
-</head>
-<body>
+{% extends "tarefa.html" %}
 
-    <h1>Gerenciador de Tarefas</h1>
+{%block titulo%}
+    tarefas - {{usuario}}
+{%endblock%}
 
-    <a href="{{ url_for('index') }}">Página Inicial</a>
-
-</body>
-</html>
+{%block body%}
+    <h1>Esse é meu perfil {{usuario}}</h1>
+    <a href="{{url_for('index')}}">Sair</a>
+{endblock%}
