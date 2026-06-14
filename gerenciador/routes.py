@@ -1,18 +1,33 @@
-from gerenciador import app
+from wtforms.validators import email
+
+from gerenciador import app, database
 from flask import render_template, url_for
 from flask_login import login_required
 from gerenciador.forms import FormLogin, FormCriarConta
-
+from gerenciador.models import Usuario
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    formLogin=FormLogin()
-    return render_template('index.html', form=formLogin)
+    formlogin=FormLogin()
+    return render_template('index.html', form=formlogin)
 
 @app.route('/criarconta', methods=['GET', 'POST'])
 def criarconta():
-    formCriarConta = FormCriarConta()
-    return render_template('criarconta.html', form=formCriarConta)
+    formcriarconta = FormCriarConta()
+
+    if formcriarconta.validate_on_submit():
+        usuario = Usuario(
+            email=formcriarconta.email.data,
+            username=formcriarconta.username.data,
+            password=formcriarconta.password.data
+        )
+
+        database.session.add(usuario)
+        database.session.commit()
+
+        print("Usuário salvo!")
+
+    return render_template('criarconta.html', form=formcriarconta)
 
 @app.route('/tarefas/<usuario>')
 @login_required
