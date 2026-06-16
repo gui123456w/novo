@@ -1,11 +1,11 @@
 {% extends "tarefa.html" %}
 
-{%block titulo%}
+{% block titulo%}
     tarefas - {{usuario}}
-{%endblock%}
+{% endblock %}
 
-{%block body%}
+{% block body%}
     <h1>Esse é meu perfil {{usuario}}</h1>
     <br>
     <a href="{{url_for('index')}}">Sair</a>
-{endblock%}
+{% endblock %}

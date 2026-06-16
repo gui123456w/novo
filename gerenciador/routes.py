@@ -15,16 +15,17 @@ def criarconta():
     formcriarconta = FormCriarConta()
 
     if formcriarconta.validate_on_submit():
+        password= bcrypt.generate_password_hash(formcriarconta.password.data)
         usuario = Usuario(
             email=formcriarconta.email.data,
             username=formcriarconta.username.data,
-            password=formcriarconta.password.data
+            password=password
         )
 
         database.session.add(usuario)
         database.session.commit()
-
-        print("Usuário salvo!")
+        login_user(usuario, remember=True)
+        return redirect(url_for('gerenciador', usuario=usuario.username))
 
     return render_template('criarconta.html', form=formcriarconta)
 
