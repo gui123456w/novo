@@ -1,9 +1,8 @@
-from wtforms.validators import email
-
-from gerenciador import app, database
-from flask import render_template, url_for
-from flask_login import login_required
+from gerenciador import app, database, bcrypt
+from flask import render_template, url_for, redirect
+from flask_login import login_required, login_user, logout_user
 from gerenciador.forms import FormLogin, FormCriarConta
+
 from gerenciador.models import Usuario
 
 @app.route('/', methods=['GET', 'POST'])
