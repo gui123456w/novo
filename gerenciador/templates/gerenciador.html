@@ -1,11 +1,11 @@
-{% extends "tarefa.html" %}
+{% extends "index.html" %}
 
 {% block titulo%}
-    tarefas - {{usuario}}
+    gerenciador - {{usuario}}
 {% endblock %}
 
 {% block body%}
-    <h1>Esse é meu perfil {{usuario}}</h1>
+    <h1>Esse é meu perfil {{usuario.username}}</h1>
     <br>
     <a href="{{url_for('logout')}}">Sair</a>
 {% endblock %}

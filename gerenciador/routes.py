@@ -14,7 +14,7 @@ def index():
 
         if usuario and bcrypt.check_password_hash(usuario.password, formlogin.password.data):
             login_user(usuario, remember=True)
-            return redirect(url_for('gerenciador'))
+            return redirect(url_for('gerenciador', id_usuario=usuario.id))
 
 
     return render_template('index.html', form=formlogin)
@@ -40,16 +40,20 @@ def criarconta():
         database.session.add(usuario)
         database.session.commit()
         login_user(usuario, remember=True)
-        return redirect(url_for('gerenciador', usuario=usuario.username))
+        return redirect(url_for('gerenciador', id_usuario=usuario.id))
 
     return render_template('criarconta.html', form=formcriarconta)
 
-@app.route('/tarefas/<usuario>')
+@app.route('/gerenciador/<id_usuario>')
 @login_required
-def tarefas(usuario):
-    return render_template('tarefas.html', usuario=usuario)
+def gerenciador(id_usuario):
+    if int(id_usuario) == (current_user.id):
+        return render_template("gerenciador.html", usuario=current_user)
+    else:
+        usuario = Usuario.query.get(int(id_usuario))
+    return render_template('gerenciador.html', usuario=usuario)
 
 
-@app.route('/gerenciador', methods=['GET', 'POST'])
-def gerenciador():
-    return render_template('gerenciador.html')
+@app.route('/tarefas', methods=['GET', 'POST'])
+def tarefas():
+    return render_template('index.html')
