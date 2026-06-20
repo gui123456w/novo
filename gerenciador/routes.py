@@ -1,10 +1,12 @@
 from gerenciador import app, database, bcrypt
 from flask import render_template, url_for, redirect
 from flask_login import login_required, login_user, logout_user, current_user
-from gerenciador.forms import FormLogin, FormCriarConta
+from gerenciador.forms import FormLogin, FormCriarConta, FormTarefa
 
-from gerenciador.models import Usuario
+from gerenciador.models import Usuario, Tarefa
 
+from werkzeug.utils import secure_filename
+import os
 @app.route('/', methods=['GET', 'POST'])
 def index():
     formlogin=FormLogin()
@@ -54,6 +56,48 @@ def gerenciador(id_usuario):
     return render_template('gerenciador.html', usuario=usuario)
 
 
+
 @app.route('/tarefas', methods=['GET', 'POST'])
+@login_required
 def tarefas():
-    return render_template('index.html')
+
+    form = FormTarefa()
+
+    if form.validate_on_submit():
+
+        nome_arquivo = None
+
+        if form.arquivo.data:
+            arquivo = form.arquivo.data
+
+            nome_arquivo = f"{current_user.id}_{secure_filename(arquivo.filename)}"
+
+            caminho = os.path.join(
+                app.root_path,
+                app.config['UPLOAD_FOLDER'],
+                nome_arquivo
+            )
+
+            arquivo.save(caminho)
+
+        tarefa = Tarefa(
+            titulo=form.titulo.data,
+            descricao=form.descricao.data,
+            imagem=nome_arquivo,
+            usuario_id=current_user.id
+        )
+
+        database.session.add(tarefa)
+        database.session.commit()
+
+        return redirect(url_for('tarefas'))
+
+    tarefas_usuario = Tarefa.query.filter_by(
+        usuario_id=current_user.id
+    ).all()
+
+    return render_template(
+        'tarefas.html',
+        form=form,
+        tarefas=tarefas_usuario
+    )

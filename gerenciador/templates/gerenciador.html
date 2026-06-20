@@ -1,11 +1,59 @@
 {% extends "index.html" %}
 
-{% block titulo%}
-    gerenciador - {{usuario}}
+{% block titulo %}
+Gerenciador - {{ usuario.username }}
 {% endblock %}
 
-{% block body%}
-    <h1>Esse é meu perfil {{usuario.username}}</h1>
-    <br>
-    <a href="{{url_for('logout')}}">Sair</a>
+{% block body %}
+
+<h2>Bem-vindo, {{ usuario.username }}, A nossa empresa!</h2>
+<img src="{{ url_for('static', filename='default.png') }}" alt="Imagem padrão">
+{% if form %}
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div>
+        {{ form.titulo.label() }}
+        {{ form.titulo() }}
+    </div>
+
+    <div>
+        {{ form.descricao.label() }}
+        {{ form.descricao() }}
+    </div>
+
+    <div>
+        {{ form.arquivo.label() }}
+        {{ form.arquivo() }}
+    </div>
+
+    <div>
+        {{ form.botao_confirmacao() }}
+    </div>
+</form>
+{% endif %}
+
+<hr>
+
+<h3>Minhas Tarefas</h3>
+
+{% for tarefa in usuario.tarefas %}
+    <div>
+        <h4>{{ tarefa.titulo }}</h4>
+
+        <p>{{ tarefa.descricao }}</p>
+
+        {% if tarefa.imagem %}
+            <img
+                src="{{ url_for('static', filename='arquivo_usuario/' + tarefa.imagem) }}"
+                alt="Imagem da tarefa"
+                width="100"
+            >
+        {% endif %}
+    </div>
+
+    <hr>
+
+{% endfor %}
+
 {% endblock %}

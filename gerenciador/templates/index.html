@@ -8,28 +8,26 @@
     </title>
 </head>
 <body>
-    {%block body%}
-
-        <h1>Bem vindo ao site </h1>
-
-        <h3>Acesse sua conta da Empresa siga> </h3>
-
+{%block body%}
+    <h1>Bem vindo ao site </h1>
+    <h3>Entre para nossa empresa </h3>
+{%block formulario %}
     <form method="POST">
-        {%block formulario %}
-        {{form.csrf_token }}
 
+        {{form.csrf_token }}
         {{form.email.label}}
         {{form.email() }}
 
         {{form.password.label}}
         {{form.password() }}
         {{form.botao_confirmacao() }}
-        {%endblock%}
-    </form>
-        <br>
+
+
         <a href="{{url_for('criarconta')}}">criarconta</a>
-    {%endblock%}
+    </form>
 
-
+{%endblock%}
+{%endblock%}
 </body>
 </html>
+

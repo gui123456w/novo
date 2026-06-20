@@ -10,18 +10,24 @@ class Usuario(database.Model, UserMixin):
 
     cargo = database.Column(database.String(50), nullable=False, default="funcionário")
 
-
+    tarefas = database.relationship(
+        'Tarefa',
+        backref='usuario',
+        lazy=True
+    )
     @login_manager.user_loader
     def load_usuario(id_usuario):
         return Usuario.query.get(int(id_usuario))
 
 class Tarefa(database.Model):
     id_tarefa = database.Column(database.Integer, primary_key=True)
-    username = database.Column(database.String(250), nullable=False)
+    titulo = database.Column(database.String(250), nullable=False)
     descricao = database.Column(database.String(250), nullable=False)
     status = database.Column(database.String(250), default='Pendente')
     data_criacao = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
+    imagem = database.Column(database.String(255))
 
+    concluida = database.Column(database.Boolean, default=False)
     usuario_id = (database.Column
                 (database.Integer,
                 database.ForeignKey('usuario.id'),
