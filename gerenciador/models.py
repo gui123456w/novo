@@ -20,7 +20,7 @@ class Usuario(database.Model, UserMixin):
         return Usuario.query.get(int(id_usuario))
 
 class Tarefa(database.Model):
-    id_tarefa = database.Column(database.Integer, primary_key=True)
+    id = database.Column(database.Integer, primary_key=True)
     titulo = database.Column(database.String(250), nullable=False)
     descricao = database.Column(database.String(250), nullable=False)
     status = database.Column(database.String(250), default='Pendente')
@@ -34,7 +34,7 @@ class Tarefa(database.Model):
                 nullable=False))
 
 class Projeto(database.Model):
-    id_projeto = database.Column(database.Integer, primary_key=True)
+    id = database.Column(database.Integer, primary_key=True)
     username = database.Column(database.String(250), nullable=False)
     descricao = database.Column(database.String(250), nullable=False)
     status = database.Column(database.String(250), default='Em andamento')

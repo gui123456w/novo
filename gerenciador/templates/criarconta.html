@@ -27,7 +27,9 @@ Criar Conta
     {{ form.confirmar_senha.label }}
     {{ form.confirmar_senha() }}
 
-
+    {% for erro in form.email.errors %}
+    <p>{{ erro }}</p>
+    {% endfor %}
 
     {{ form.botao_confirmacao() }}
 </form>

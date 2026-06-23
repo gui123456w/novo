@@ -9,6 +9,13 @@ Gerenciador - {{ usuario.username }}
 <h2>Bem-vindo, {{ usuario.username }}, A nossa empresa!</h2>
 <img src="{{ url_for('static', filename='default.png') }}" alt="Imagem padrão">
 {% if form %}
+<form method="Post" enctype="multipart/form-data">
+        {{form.csrf_token}}
+
+        {{form.tarefas()}}
+        {{form.botao_confirmacao()}}
+</form>
+
 <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
 
