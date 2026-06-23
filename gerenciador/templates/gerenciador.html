@@ -7,15 +7,10 @@ Gerenciador - {{ usuario.username }}
 {% block body %}
 
 <h2>Bem-vindo, {{ usuario.username }}, A nossa empresa!</h2>
+
 <img src="{{ url_for('static', filename='default.png') }}" alt="Imagem padrão">
+
 {% if form %}
-<form method="Post" enctype="multipart/form-data">
-        {{form.csrf_token}}
-
-        {{form.tarefas()}}
-        {{form.botao_confirmacao()}}
-</form>
-
 <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
 
@@ -47,20 +42,15 @@ Gerenciador - {{ usuario.username }}
 {% for tarefa in usuario.tarefas %}
     <div>
         <h4>{{ tarefa.titulo }}</h4>
-
         <p>{{ tarefa.descricao }}</p>
 
         {% if tarefa.imagem %}
-            <img
-                src="{{ url_for('static', filename='arquivo_usuario/' + tarefa.imagem) }}"
-                alt="Imagem da tarefa"
-                width="100"
-            >
+            <img src="{{ url_for('static', filename='arquivo_usuario/' + tarefa.imagem) }}"
+                 alt="Imagem da tarefa"
+                 width="100">
         {% endif %}
     </div>
-
     <hr>
-
 {% endfor %}
 
 {% endblock %}

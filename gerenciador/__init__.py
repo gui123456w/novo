@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gerenciador.db'
 app.config['SECRET_KEY'] = '86d669633821c3fd298601018490b6b6f9416ccb8ee7873729b963615c3d9676'
 
-app.config['UPLOAD_FOLDER'] = "static/arquivos_tarefa"
+app.config['UPLOAD_FOLDER'] = "static/arquivo_tarefa"
 
 database = SQLAlchemy(app)
 bcrypt= Bcrypt(app)

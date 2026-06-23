@@ -46,58 +46,37 @@ def criarconta():
 
     return render_template('criarconta.html', form=formcriarconta)
 
-@app.route('/gerenciador/<id_usuario>')
+@app.route('/gerenciador/<id_usuario>', methods=['GET', 'POST'])
 @login_required
 def gerenciador(id_usuario):
+
     if int(id_usuario) == (current_user.id):
-        return render_template("gerenciador.html", usuario=current_user)
+        form = FormTarefa()
+        if form.validate_on_submit():
+            #arquivo e
+            if form.validate_on_submit():
+                arquivo = form.arquivo.data
+                nome_seguro = secure_filename(arquivo.filename)
+
+                caminho_projeto = os.path.abspath(os.path.dirname(__file__))
+                caminho = os.path.join(
+                    caminho_projeto,
+                    app.config['UPLOAD_FOLDER'],
+                    nome_seguro
+                )
+
+                arquivo.save(caminho)
+
+                tarefa = Tarefa(
+                    titulo=form.titulo.data,
+                    descricao=form.descricao.data,
+                    imagem=nome_seguro,
+                    usuario_id=current_user.id
+                )
+
+                database.session.add(tarefa)
+                database.session.commit()
+        return render_template("gerenciador.html", usuario=current_user, form=form)
     else:
         usuario = Usuario.query.get(int(id_usuario))
-    return render_template('gerenciador.html', usuario=usuario)
-
-
-
-@app.route('/tarefas', methods=['GET', 'POST'])
-@login_required
-def tarefas():
-
-    form = FormTarefa()
-
-    if form.validate_on_submit():
-
-        nome_arquivo = None
-
-        if form.arquivo.data:
-            arquivo = form.arquivo.data
-
-            nome_arquivo = f"{current_user.id}_{secure_filename(arquivo.filename)}"
-
-            caminho = os.path.join(
-                app.root_path,
-                app.config['UPLOAD_FOLDER'],
-                nome_arquivo
-            )
-
-            arquivo.save(caminho)
-
-        tarefa = Tarefa(
-            titulo=form.titulo.data,
-            descricao=form.descricao.data,
-            imagem=nome_arquivo,
-            usuario_id=current_user.id
-        )
-
-        database.session.add(tarefa)
-        database.session.commit()
-
-        return redirect(url_for('tarefas'))
-
-    tarefas_usuario = Tarefa.query.filter_by(
-        usuario_id=current_user.id
-    ).all()
-
-    return render_template(
-        'tarefas.html',
-        form=form,
-        tarefas=tarefas_usuario
-    )
+    return render_template('gerenciador.html' , usuario=usuario, form=None)
