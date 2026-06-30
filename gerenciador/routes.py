@@ -46,9 +46,9 @@ def criarconta():
 
     return render_template('criarconta.html', form=formcriarconta)
 
-@app.route('/gerenciador/<id_usuario>', methods=['GET', 'POST'])
+@app.route('/tarefas/<id_usuario>', methods=['GET', 'POST'])
 @login_required
-def gerenciador(id_usuario):
+def tarefas(id_usuario):
 
     if int(id_usuario) == (current_user.id):
         form = FormTarefa()
@@ -76,7 +76,7 @@ def gerenciador(id_usuario):
 
                 database.session.add(tarefa)
                 database.session.commit()
-        return render_template("gerenciador.html", usuario=current_user, form=form)
+        return render_template("tarefas.html", usuario=current_user, form=form)
     else:
         usuario = Usuario.query.get(int(id_usuario))
-    return render_template('gerenciador.html' , usuario=usuario, form=None)
+    return render_template('tarefas.html' , usuario=usuario, form=None)

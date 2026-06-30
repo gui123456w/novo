@@ -9,7 +9,7 @@ class Usuario(database.Model, UserMixin):
     email = database.Column(database.String(250), nullable=False, unique=True)
 
     cargo = database.Column(database.String(50), nullable=False, default="funcionário")
-
+    arquivo = database.relationship('Arquivo', backref='usuario', lazy=True)
     tarefas = database.relationship(
         'Tarefa',
         backref='usuario',
@@ -25,7 +25,7 @@ class Tarefa(database.Model):
     descricao = database.Column(database.String(250), nullable=False)
     status = database.Column(database.String(250), default='Pendente')
     data_criacao = database.Column(database.DateTime, nullable=False, default=datetime.utcnow)
-    imagem = database.Column(database.String(255))
+    arquivo = database.Column(database.String, default='default.png')
 
     concluida = database.Column(database.Boolean, default=False)
     usuario_id = (database.Column
@@ -33,7 +33,7 @@ class Tarefa(database.Model):
                 database.ForeignKey('usuario.id'),
                 nullable=False))
 
-class Projeto(database.Model):
+class Gerenciador(database.Model):
     id = database.Column(database.Integer, primary_key=True)
     username = database.Column(database.String(250), nullable=False)
     descricao = database.Column(database.String(250), nullable=False)

@@ -26,19 +26,14 @@ class FormCriarConta(FlaskForm):
 
 
 class FormTarefa(FlaskForm):
-    titulo = StringField(
-        'Titulo', validators=[DataRequired()]
-    )
-    descricao = StringField('Descrição')
+    titulo = StringField("Título", validators=[DataRequired()])
+    descricao = StringField("Descrição", validators=[DataRequired()])
+    arquivo = FileField("Arquivo", validators=[DataRequired()])
 
-    arquivo = FileField(
-        'Arquivo',
-        validators=[
-            FileAllowed(
-                ['jpg', 'jpeg', 'png'],
-                'Somente imagens!'
-            )
-        ]
-    )
+    botao_confirmacao = SubmitField("Salvar")
 
-    botao_confirmacao = SubmitField('Salvar')
+class FormGerenciador(FlaskForm):
+    nome = StringField("Nome", validators=[DataRequired()])
+    arquivo = FileField("Arquivo", validators=[DataRequired()])
+
+    botao_confirmacao = SubmitField("Criar Arquivo")
