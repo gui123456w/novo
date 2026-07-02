@@ -1,14 +1,17 @@
-{% extends "index.html" %}
+<h1>Feed de Tarefas</h1>
 
-{%block titulo%}
-    tarefas - {{usuario}}
-{%endblock%}
+{% for tarefa in tarefas %}
 
-{%block body%}
-    <h1>Tarefas do usuario </h1>
+    <h3>{{ tarefa.titulo }}</h3>
 
-    <a href="{{url_for('index')}}">Sair</a>
-    <br>
-    <a href="{{ url_for('tarefa', id_usuario=current_user.id) }}">
+    <p>{{ tarefa.descricao }}</p>
 
-{%endblock%}
+    <p>Usuário: {{ tarefa.usuario.username }}</p>
+
+    {% if tarefa.arquivo %}
+        <img src="{{ url_for('static', filename='arquivo_tarefa/' + tarefa.arquivo) }}" width="150">
+    {% endif %}
+
+    <hr>
+
+{% endfor %}

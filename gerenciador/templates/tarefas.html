@@ -6,56 +6,74 @@ Tarefas - {{ usuario.username }}
 
 {% block body %}
 
-<h2>Bem-vindo, {{ usuario.username }}, A nossa empresa!</h2>
-{% for arquivo in usuario.arquivo %}
-  <img src="{{url_for('static', filename='arquivo_tarefa/{}'.format())}}">
+<h2>Minhas Tarefas</h2>
 
-{% else %}
-  <img src="{{url_for('static', filename='arquivo_tarefa/default.png')}}">
-{% endfor %}
 {% if form %}
 <form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
 
     <div>
-        {{ form.titulo.label() }}
-        {{ form.titulo() }}
+        {{ form.titulo.label }}
+        {{ form.titulo(class="form-control") }}
     </div>
 
-    <div>
-        {{ form.descricao.label() }}
-        {{ form.descricao() }}
-    </div>
+    <br>
 
     <div>
-        {{ form.arquivo.label() }}
-        {{ form.arquivo() }}
+        {{ form.descricao.label }}
+        {{ form.descricao(class="form-control") }}
     </div>
 
+    <br>
+
     <div>
-        {{ form.botao_confirmacao() }}
+        {{ form.arquivo.label }}
+        {{ form.arquivo(class="form-control") }}
+    </div>
+
+    <br>
+
+    <div>
+        {{ form.botao_confirmacao(class="btn btn-primary") }}
     </div>
 </form>
-{% endif %}
 
 <hr>
+{% endif %}
 
-<h3>Minhas Tarefas</h3>
+{% if usuario.tarefas %}
 
-{% for tarefa in usuario.tarefas %}
-    <div>
+    {% for tarefa in usuario.tarefas %}
+
+    <div class="card mb-3 p-3">
+
         <h4>{{ tarefa.titulo }}</h4>
+
         <p>{{ tarefa.descricao }}</p>
 
-        {% if tarefa.imagem %}
-            <img src="{{ url_for('static', filename='arquivo_usuario/' + tarefa.imagem) }}"
+        <p>Status: {{ tarefa.status }}</p>
+        <br>
+        <a href="{{ url_for('index') }}">sair</a>
+        <a href="{{ url_for('gerenciador') }}">Gerenciador da Empresa</a>
+        <br>
+        {% if tarefa.arquivo %}
+           <img src="{{ url_for('static', filename='arquivo_tarefa/' ~ tarefa.arquivo) }}">
                  alt="Imagem da tarefa"
-                 width="100">
+                 width="200">
+        {% else %}
+            <p>Nenhuma imagem enviada.</p>
         {% endif %}
+
     </div>
+
     <hr>
-{% endfor %}
+
+    {% endfor %}
+
+{% else %}
+
+<p>Você ainda não possui tarefas cadastradas.</p>
+
+{% endif %}
 
 {% endblock %}
-
-

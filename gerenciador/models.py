@@ -9,7 +9,6 @@ class Usuario(database.Model, UserMixin):
     email = database.Column(database.String(250), nullable=False, unique=True)
 
     cargo = database.Column(database.String(50), nullable=False, default="funcionário")
-    arquivo = database.relationship('Arquivo', backref='usuario', lazy=True)
     tarefas = database.relationship(
         'Tarefa',
         backref='usuario',
@@ -18,6 +17,16 @@ class Usuario(database.Model, UserMixin):
     @login_manager.user_loader
     def load_usuario(id_usuario):
         return Usuario.query.get(int(id_usuario))
+
+class Arquivo(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    nome = database.Column(database.String(250))
+
+    usuario_id = database.Column(
+        database.Integer,
+        database.ForeignKey('usuario.id'),
+        nullable=False
+    )
 
 class Tarefa(database.Model):
     id = database.Column(database.Integer, primary_key=True)

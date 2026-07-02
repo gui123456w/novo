@@ -16,7 +16,7 @@ def index():
 
         if usuario and bcrypt.check_password_hash(usuario.password, formlogin.password.data):
             login_user(usuario, remember=True)
-            return redirect(url_for('gerenciador', id_usuario=usuario.id))
+            return redirect(url_for('tarefas', id_usuario=usuario.id))
 
 
     return render_template('index.html', form=formlogin)
@@ -42,7 +42,7 @@ def criarconta():
         database.session.add(usuario)
         database.session.commit()
         login_user(usuario, remember=True)
-        return redirect(url_for('gerenciador', id_usuario=usuario.id))
+        return redirect(url_for('tarefas', id_usuario=usuario.id))
 
     return render_template('criarconta.html', form=formcriarconta)
 
@@ -50,33 +50,56 @@ def criarconta():
 @login_required
 def tarefas(id_usuario):
 
-    if int(id_usuario) == (current_user.id):
+    if int(id_usuario) == current_user.id:
+        usuario = current_user
         form = FormTarefa()
+
         if form.validate_on_submit():
-            #arquivo e
-            if form.validate_on_submit():
-                arquivo = form.arquivo.data
-                nome_seguro = secure_filename(arquivo.filename)
+            arquivo = form.arquivo.data
+            nome_seguro = secure_filename(arquivo.filename)
 
-                caminho_projeto = os.path.abspath(os.path.dirname(__file__))
-                caminho = os.path.join(
-                    caminho_projeto,
-                    app.config['UPLOAD_FOLDER'],
-                    nome_seguro
-                )
+            caminho_projeto = os.path.abspath(os.path.dirname(__file__))
+            caminho = os.path.join(
+                caminho_projeto,
+                app.config["UPLOAD_FOLDER"],
+                nome_seguro
+            )
 
-                arquivo.save(caminho)
+            arquivo.save(caminho)
 
-                tarefa = Tarefa(
-                    titulo=form.titulo.data,
-                    descricao=form.descricao.data,
-                    imagem=nome_seguro,
-                    usuario_id=current_user.id
-                )
+            tarefa = Tarefa(
+                titulo=form.titulo.data,
+                descricao=form.descricao.data,
+                arquivo=nome_seguro,
+                usuario_id=current_user.id
+            )
 
-                database.session.add(tarefa)
-                database.session.commit()
-        return render_template("tarefas.html", usuario=current_user, form=form)
+            database.session.add(tarefa)
+            database.session.commit()
+
+            return redirect(url_for("tarefas", id_usuario=current_user.id))
+
+        return render_template(
+            "tarefas.html",
+            usuario=usuario,
+            form=form
+        )
+
     else:
-        usuario = Usuario.query.get(int(id_usuario))
-    return render_template('tarefas.html' , usuario=usuario, form=None)
+        usuario = Usuario.query.get_or_404(int(id_usuario))
+
+        return render_template(
+            "tarefas.html",
+            usuario=usuario,
+            form=None
+        )
+
+@app.route('/gerenciador')
+@login_required
+def gerenciador():
+    tarefas = Tarefa.query.order_by(Tarefa.id.desc()).all()
+
+    return render_template(
+        "gerenciador.html",
+        tarefas=tarefas
+    )
