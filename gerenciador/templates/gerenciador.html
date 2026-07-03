@@ -9,7 +9,9 @@
     <p>Usuário: {{ tarefa.usuario.username }}</p>
 
     {% if tarefa.arquivo %}
+         <a href="{{ url_for('tarefas', id_usuario=tarefa.usuario.id) }}">
         <img src="{{ url_for('static', filename='arquivo_tarefa/' + tarefa.arquivo) }}" width="150">
+        </a>
     {% endif %}
 
     <hr>
